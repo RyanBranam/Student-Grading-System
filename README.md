@@ -98,12 +98,12 @@ File errors will be handled safely by checking file operations before reading or
 ## Tools & Libraries
 
 * C++20
-* '<iostream>
-* '<string>
-* '<vector>
-* '<fstream>
-* '<iomanip>
-* '<algorithm>
+* '<iostream>'
+* '<string>'
+* '<vector>'
+* '<fstream>'
+* '<iomanip>'
+* '<algorithm>'
 
 
 ## How to Run
