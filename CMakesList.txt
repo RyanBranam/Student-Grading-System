@@ -1,1 +1,15 @@
+cmake_minimum_required(VERSION 3.20)
 
+project(StudentGradingSystem)
+
+set(CMAKE_CXX_STANDARD 20)
+
+include_directories(include)
+
+add_executable(StudentGradingSystem
+    src/main.cpp
+    src/Student.cpp
+    src/Grade.cpp
+    src/GradingScale.cpp
+    src/InputValidator.cpp
+)
