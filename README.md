@@ -84,7 +84,7 @@ Edge cases handled include:
 * Searching for non-existent students
 * Deleting from an empty list
 
-File errors will be handled safely by checking file operations before reading or writing. Exception handling may also be used where appropriate to prevent crashes.
+File errors will be handled safely by checking file operations before reading or writing. Exception handling may also be used where appropriate to prevent crashes
 
 
 ## OOP Concepts Used
