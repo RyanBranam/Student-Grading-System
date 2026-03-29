@@ -1,0 +1,16 @@
+# CLion
+.idea/
+cmake-build-*/
+
+# Visual Studio
+.vs/
+*.vcxproj*
+*.sln
+
+# Build files
+*.exe
+*.out
+*.o
+
+# Mac/Linux
+.DS_Store
