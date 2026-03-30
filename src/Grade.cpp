@@ -1,7 +1,7 @@
 #include "Grade.h"
 
 // Initializes Grade object with category, score, maxScore, and weight
-Grade::Grade(std::string category, double score, double maxScore, doouble weight)
+Grade::Grade(std::string category, double score, double maxScore, double weight)
     : category(category), score(score), maxScore(maxScore), weight(weight) {}
 
 // Returns score earned for that grade

@@ -8,8 +8,5 @@ include_directories(include)
 
 add_executable(StudentGradingSystem
     src/main.cpp
-    src/Student.cpp
     src/Grade.cpp
-    src/GradingScale.cpp
-    src/InputValidator.cpp
 )
