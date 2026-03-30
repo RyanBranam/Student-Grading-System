@@ -21,3 +21,8 @@ Grade::Grade(std::string category, double score, double maxScore, doouble weight
     }
     return (score / maxScore) * 100;
 }
+
+// Updates score for this grade
+    void Grade::setScore(double newScore) {
+        score = newScore;
+}
