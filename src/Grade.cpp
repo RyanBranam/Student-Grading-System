@@ -13,3 +13,11 @@ Grade::Grade(std::string category, double score, double maxScore, doouble weight
     std::string Grade::getCategory() const {
         return category;
     }
+
+// Calculates and returns percentage of the grade
+    double Grade::getPercentage() const {
+         if (maxScore == 0) {
+            return 0;      // Avoid div by 0
+    }
+    return (score / maxScore) * 100;
+}
