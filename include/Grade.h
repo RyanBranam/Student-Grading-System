@@ -5,19 +5,20 @@
 
 class Grade {
 private:
-    std::string category;
-    double score;
-    double maxScore;
-    double weight;
+    std::string category;        // Type of grade (exam, hw, quiz)
+    double score;                // Points earned
+    double maxScore;             // Max possible points
+    double weight;               // Weight of this grade toward final grade
 
 public:
+    //Initializes Grade object with required values
     Grade(std::string category, double score, double maxScore, double weight);
 
-    double getScore() const;
-    double getPercentage() const;
-    std::string getCategory() const;
+    double getScore() const;            // returns score
+    double getPercentage() const;       // returns percentage (score / maxScore * 100)
+    std::string getCategory() const;    // returns category of grade
 
-void setScore(double score);
+void setScore(double score);     // Updates score value
 
 };
 
