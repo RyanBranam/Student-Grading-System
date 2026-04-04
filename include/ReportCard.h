@@ -2,6 +2,7 @@
 #define ReportCard_h
 
 #include <string>
+#include <cmath>
 
 class ReportCard {
 private:
