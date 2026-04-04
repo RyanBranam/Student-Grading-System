@@ -44,7 +44,7 @@ int main() {
     int choice;
 
     std::cout << "Welcome to the Student Grading System!\n";
-    std::cout << "1. Add Student\n;
+    std::cout << "1. Add Student\n";
 
     std::cin>>choice;
 
