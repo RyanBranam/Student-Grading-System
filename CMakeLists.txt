@@ -11,7 +11,6 @@ add_executable(StudentGradingSystem
     src/Grade.cpp
     src/InputValidator.cpp
     src/Student.cpp
-    src/ReportCard.cpp
     src/GradingSystem.cpp
     src/GradingScale.cpp
 )
