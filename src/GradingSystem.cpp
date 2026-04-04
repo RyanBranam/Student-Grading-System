@@ -66,10 +66,10 @@ void GradingSystem::generateReports() const {
         double avg = s.calculateAverage();
         std::string letterGrade = scale.assignLetterGrade(avg);
 
-        ReportCard report(s.getName(), avg, letterGrade,
-                          s.getBehavior(), s.getComments());
-        report.generateReport();
-        report.displayReport();
+      //  ReportCard report(s.getName(), avg, letterGrade,
+      //                    s.getBehavior(), s.getComments());
+      //  report.generateReport();
+      //  report.displayReport();
     }
 }
 

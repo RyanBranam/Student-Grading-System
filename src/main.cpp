@@ -7,7 +7,7 @@
 int main() {
 
     /* NOTE!!!!!!
-     * All of this is for testing and can be deleted
+     * All of this is for testing
      * This has no effect on the final menu system and is gonna get deleted when everything is done
     */
 
@@ -38,8 +38,8 @@ int main() {
         // Custom scale test
         scale.setScale(85, 75, 65, 55);
         std::cout << "Custom scale, 84 -> " << scale.assignLetterGrade(84) << std::endl;
+*/
 
-    */
 
     int choice;
 
