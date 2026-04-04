@@ -9,7 +9,6 @@ include_directories(include)
 add_executable(StudentGradingSystem
     src/main.cpp
     src/Grade.cpp
-    src/FileManager.cpp
     src/InputValidator.cpp
     src/Student.cpp
     src/ReportCard.cpp

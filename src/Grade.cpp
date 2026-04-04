@@ -22,6 +22,11 @@ Grade::Grade(std::string category, double score, double maxScore, double weight)
     return (score / maxScore) * 100;
 }
 
+// Getter for weight value (needed for student avg calc)
+    double Grade::getWeight() const {
+    return weight;
+}
+
 // Updates score for this grade
     void Grade::setScore(double newScore) {
         score = newScore;

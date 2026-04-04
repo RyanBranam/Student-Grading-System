@@ -1,5 +1,12 @@
 #include <iostream>
 #include "Grade.h"
+#include "Student.h"
+#include "GradingScale.h"
+
+/* NOTE!!!!!!
+ * All of this is for testing and can be deleted
+ * This has no effect on the final menu system and is gonna get deleted when everything is done
+*/
 
 int main() {
 
@@ -14,6 +21,24 @@ int main() {
 // Display info for grade2
     std::cout << "Grade 2 Category: " << grade2.getCategory() << std::endl;
     std::cout << "Grade 2 Percentage: " << grade2.getPercentage() << "%" << std::endl;
+
+/* Test Grading Scale
+    std::cout << "\n Testing Grading Scale";
+
+    GradingScale scale;
+
+    std::cout << "95 -> " << scale.assignLetterGrade(95) << std::endl;
+    std::cout << "85 -> " << scale.assignLetterGrade(85) << std::endl;
+    std::cout << "75 -> " << scale.assignLetterGrade(75) << std::endl;
+    std::cout << "65 -> " << scale.assignLetterGrade(65) << std::endl;
+    std::cout << "55 -> " << scale.assignLetterGrade(55) << std::endl;
+
+    // Custom scale test
+    scale.setScale(85, 75, 65, 55);
+    std::cout << "Custom scale, 84 -> " << scale.assignLetterGrade(84) << std::endl;
+
+*/
+
 
     return 0;
 }
