@@ -19,6 +19,11 @@ void Student::addGrade(const std::string& category, double score,
         return;
     }
 
+    if (weight < 0.0 || weight > 1.0) {
+        std::cout << "Invalid weight. Must be between 0.0 and 1.0.\n";
+        return;
+    }
+
     grades.push_back(Grade(category, score, maxScore, weight));
     std::cout << "Grade added successfully.\n";
 }
