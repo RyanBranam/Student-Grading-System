@@ -29,8 +29,7 @@ void Student::editGrade(int index, double newScore) {
         std::cout << "Invalid index. No grade found at position " << index << ".\n";
         return;
     }
-    if (!InputValidator::isValidGrade(newScore, grades[index].getScore() > 0
-                                      ? grades[index].getScore() : newScore)) {
+    if (!InputValidator::isValidGrade(newScore, grades[index].getMaxScore())) {
         std::cout << "Invalid score.\n";
         return;
     }
