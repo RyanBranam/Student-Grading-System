@@ -1,5 +1,6 @@
 #include "InputValidator.h"
 #include <algorithm>
+#include <cctype>
 
 // if score is non negative and does not exceed maxScore
 bool InputValidator::isValidGrade(double score, double maxScore) {
@@ -15,6 +16,6 @@ bool InputValidator::isValidStudent(int studentId) {
 bool InputValidator::isNonEmptyString(const std::string& str) {
     return !str.empty() &&
            std::any_of(str.begin(), str.end(), [](char c) {
-               return !std::isspace(c);
+               return !std::isspace(static_cast<unsigned>(c));
            });
 }
