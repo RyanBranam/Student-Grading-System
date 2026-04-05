@@ -64,12 +64,12 @@ void GradingSystem::generateReports() const {
 
     for (const Student& s : students) {
         double avg = s.calculateAverage();
-        std::string letterGrade = scale.assignLetterGrade(avg);
+        std::string letterGrade = s.getFinalLetterGrade(scale);
 
-      //  ReportCard report(s.getName(), avg, letterGrade,
-      //                    s.getBehavior(), s.getComments());
-      //  report.generateReport();
-      //  report.displayReport();
+      ReportCard report(s.getName(), avg, letterGrade,
+                          s.getBehavior(), s.getComments());
+      report.generateReport();
+      report.displayReport();
     }
 }
 
