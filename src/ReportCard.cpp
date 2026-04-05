@@ -2,6 +2,8 @@
 #include "FileManager.h"
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <sstream>
 
 // initializes all report card fields
 ReportCard::ReportCard(const std::string& studentName, double average,
@@ -20,7 +22,7 @@ void ReportCard::generateReport() {
 // Prints a formatted report card to the console
 void ReportCard::displayReport() const {
     std::cout << "\n==============================\n";
-    std::cout << "         report CARD\n";
+    std::cout << "         REPORT CARD\n";
     std::cout << "==============================\n";
     std::cout << "Student Name : " << studentName << "\n";
     std::cout << "Average      : " << std::fixed << std::setprecision(2)
@@ -33,16 +35,19 @@ void ReportCard::displayReport() const {
 
 // Saves the report card to a file using FileManager
 void ReportCard::saveReport(const std::string& fileName) const {
+    std::ostringstream out;
+    out <<      "==============================\n"
+        <<      "         REPORT CARD\n"
+        <<      "==============================\n"
+        <<      "Student Name : " + studentName << "\n"
+        <<      "Average      : " + std::fixed << std::setprecision(2) << average << "%\n"
+        <<      "Final Grade  : " + finalGrade << "\n"
+        <<      "Behavior     : " + behavior << "\n"
+        <<      "Comments     : " + comments << "\n"
+        <<      "==============================\n";
+
     FileManager fm(fileName);
-    fm.saveData("==============================\n"
-                "         REPORT CARD\n"
-                "==============================\n"
-                "Student Name : " + studentName + "\n" +
-                "Average      : " + std::to_string(average) + "%\n" +
-                "Final Grade  : " + finalGrade + "\n" +
-                "Behavior     : " + behavior + "\n" +
-                "Comments     : " + comments + "\n" +
-                "==============================\n");
+    fm.saveData(out.str());
 }
 
 // Getters
