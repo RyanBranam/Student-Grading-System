@@ -12,7 +12,7 @@ private:
 
 public:
     //Initializes Grade object with required values
-    Grade(std::string& category, double score, double maxScore, double weight);
+    Grade(const std::string& category, double score, double maxScore, double weight);
 
     double getMaxScore() const;
     double getWeight() const;           // Returns weight of this grade (used in weighted avg calc)

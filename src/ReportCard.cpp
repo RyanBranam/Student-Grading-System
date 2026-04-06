@@ -39,11 +39,11 @@ void ReportCard::saveReport(const std::string& fileName) const {
     out <<      "==============================\n"
         <<      "         REPORT CARD\n"
         <<      "==============================\n"
-        <<      "Student Name : " + studentName << "\n"
-        <<      "Average      : " + std::fixed << std::setprecision(2) << average << "%\n"
-        <<      "Final Grade  : " + finalGrade << "\n"
-        <<      "Behavior     : " + behavior << "\n"
-        <<      "Comments     : " + comments << "\n"
+        <<      "Student Name : " << studentName << "\n"
+        <<      "Average      : " << std::fixed << std::setprecision(2) << average << "%\n"
+        <<      "Final Grade  : " << finalGrade << "\n"
+        <<      "Behavior     : " << behavior << "\n"
+        <<      "Comments     : " << comments << "\n"
         <<      "==============================\n";
 
     FileManager fm(fileName);
