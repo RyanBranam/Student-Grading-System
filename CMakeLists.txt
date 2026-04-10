@@ -15,4 +15,6 @@ add_executable(StudentGradingSystem
     src/GradingScale.cpp
     src/ReportCard.cpp
     src/FileManager.cpp
+        include/MainWindow.h
+        src/MainWindow.cpp
 )
