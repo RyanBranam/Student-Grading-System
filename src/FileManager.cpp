@@ -4,11 +4,13 @@
 #include <sstream>
 
 // Initializes FileManager with the provided file name
-FileManager::FileManager(const std::string& fileName)
-    : fileName(fileName) {}
+FileManager::FileManager(const std::string &fileName)
+    : fileName(fileName)
+{}
 
 // Saves data string to the file, overwrites existing content
-void FileManager::saveData(const std::string& data) const {
+void FileManager::saveData(const std::string &data) const
+{
     std::ofstream outFile(fileName);
 
     if (!outFile.is_open()) {
@@ -22,7 +24,8 @@ void FileManager::saveData(const std::string& data) const {
 }
 
 // Loads and returns the full contents of the file as a string
-std::string FileManager::loadData() const {
+std::string FileManager::loadData() const
+{
     std::ifstream inFile(fileName);
 
     if (!inFile.is_open()) {
@@ -38,9 +41,13 @@ std::string FileManager::loadData() const {
 }
 
 // Getter
-std::string FileManager::getFileName() const { return fileName; }
+std::string FileManager::getFileName() const
+{
+    return fileName;
+}
 
 // Setter
-void FileManager::setFileName(const std::string& newFileName) {
+void FileManager::setFileName(const std::string &newFileName)
+{
     fileName = newFileName;
 }
