@@ -34,6 +34,7 @@ add_executable(StudentGradingSystem
 
         src/ReportCard.cpp
         include/ReportCard.h
+        src/ConsoleBackup.cpp
 )
 
 target_link_libraries(StudentGradingSystem PRIVATE Qt6::Widgets)
