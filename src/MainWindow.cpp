@@ -8,22 +8,50 @@
 #include <QPushButton>
 #include <QTextEdit>
 #include <QAbstractItemView>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QTableWidgetItem>
+#include <QLineEdit>
+#include <QString>
+
+#include <sstream>
+#include <vector>
+#include <string>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
+    fileManager("students.txt"),
     studentTable(nullptr),
     addStudentButton(nullptr),
+    deleteStudentButton(nullptr),
     addGradeButton(nullptr),
+    editNotesButton(nullptr),
     generateReportButton(nullptr),
     refreshButton(nullptr),
+    saveButton(nullptr),
+    loadButton(nullptr),
     outputBox(nullptr) {
     setupUi();
+
+
+    refreshTable();
+    logMessage("GUI loaded successfully.");
+
+    connect(addStudentButton, &QPushButton::clicked, this, &MainWindow::addStudent);
+    connect(deleteStudentButton, &QPushButton::clicked, this, &MainWindow::deleteStudent);
+    connect(addGradeButton, &QPushButton::clicked, this, &MainWindow::addGrade);
+    connect(editNotesButton, &QPushButton::clicked, this, &MainWindow::editNotes);
+    connect(generateReportButton, &QPushButton::clicked, this, &MainWindow::generateReport);
+    connect(refreshButton, &QPushButton::clicked, this, &MainWindow::refreshTable);
+    connect(saveButton, &QPushButton::clicked, this, &MainWindow::saveToFile);
+    connect(loadButton, &QPushButton::clicked, this, &MainWindow::loadFromFile);
 }
-    MainWindow::~MainWindow() = default;
+
+MainWindow::~MainWindow() = default;
 
 void MainWindow::setupUi() {
     setWindowTitle("Student Grading System");
-    resize(950, 600);
+    resize(1100, 650);
 
     QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -37,22 +65,356 @@ void MainWindow::setupUi() {
     studentTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     studentTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     studentTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    studentTable->setSelectionMode(QAbstractItemView::SingleSelection);
 
     addStudentButton = new QPushButton("Add Student", this);
+    deleteStudentButton = new QPushButton("Delete Student", this);
     addGradeButton = new QPushButton("Add Grade", this);
+    editNotesButton = new QPushButton("Edit Notes", this);
     generateReportButton = new QPushButton("Generate Report", this);
     refreshButton = new QPushButton("Refresh", this);
+    saveButton = new QPushButton("Save", this);
+    loadButton = new QPushButton("Load", this);
 
     outputBox = new QTextEdit(this);
     outputBox->setReadOnly(true);
-    outputBox->setPlaceholderText("Messages and reports will appear here...");
+    outputBox->setPlaceholderText("Messages and report output will appear here...");
 
     buttonLayout->addWidget(addStudentButton);
+    buttonLayout->addWidget(deleteStudentButton);
     buttonLayout->addWidget(addGradeButton);
+    buttonLayout->addWidget(editNotesButton);
     buttonLayout->addWidget(generateReportButton);
     buttonLayout->addWidget(refreshButton);
+    buttonLayout->addWidget(saveButton);
+    buttonLayout->addWidget(loadButton);
 
     mainLayout->addLayout(buttonLayout);
     mainLayout->addWidget(studentTable);
     mainLayout->addWidget(outputBox);
+}
+
+void MainWindow::addStudent() {
+    bool ok = false;
+
+    int id = QInputDialog::getInt(
+        this,
+        "Add Student",
+        "Enter student ID:",
+        1000,
+        1,
+        999999,
+        1,
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    QString name = QInputDialog::getText(
+        this,
+        "Add Student",
+        "Enter student name:",
+        QLineEdit::Normal,
+        "",
+        &ok
+        );
+
+    if (!ok || name.trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Invalid Input", "Student name cannot be empty.");
+        return;
+    }
+
+    gradingSystem.addStudent(id, name.trimmed().toStdString());
+    refreshTable();
+    logMessage("Attempted to add student: " + name.trimmed());
+}
+
+void MainWindow::deleteStudent() {
+    int row = studentTable->currentRow();
+    std::vector<Student>& students = gradingSystem.getStudents();
+
+    if (row < 0 || row >= static_cast<int>(students.size())) {
+        QMessageBox::information(this, "Select Student", "Please select a student first.");
+        return;
+    }
+
+    Student& student = students[row];
+    int id = student.getStudentId();
+    QString name = QString::fromStdString(student.getName());
+
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this,
+        "Delete Student",
+        "Are you sure you want to delete " + name + "?",
+        QMessageBox::Yes | QMessageBox::No
+        );
+
+    if (reply == QMessageBox::No) {
+        return;
+    }
+
+    gradingSystem.deleteStudent(id);
+    refreshTable();
+    logMessage("Deleted student: " + name);
+}
+
+void MainWindow::addGrade() {
+    int row = studentTable->currentRow();
+    std::vector<Student>& students = gradingSystem.getStudents();
+
+    if (row < 0 || row >= static_cast<int>(students.size())) {
+        QMessageBox::information(this, "Select Student", "Please select a student first.");
+        return;
+    }
+
+    Student& student = students[row];
+    bool ok = false;
+
+    QString category = QInputDialog::getText(
+        this,
+        "Add Grade",
+        "Enter category:",
+        QLineEdit::Normal,
+        "",
+        &ok
+        );
+
+    if (!ok || category.trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Invalid Input", "Category cannot be empty.");
+        return;
+    }
+
+    double score = QInputDialog::getDouble(
+        this,
+        "Add Grade",
+        "Enter score:",
+        0.0,
+        0.0,
+        1000.0,
+        2,
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    double maxScore = QInputDialog::getDouble(
+        this,
+        "Add Grade",
+        "Enter max score:",
+        100.0,
+        0.0,
+        1000.0,
+        2,
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    double weight = QInputDialog::getDouble(
+        this,
+        "Add Grade",
+        "Enter weight:",
+        1.0,
+        0.0,
+        100.0,
+        2,
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    student.addGrade(category.trimmed().toStdString(), score, maxScore, weight);
+
+    refreshTable();
+    logMessage("Added grade for " + QString::fromStdString(student.getName()));
+}
+
+void MainWindow::editNotes() {
+    int row = studentTable->currentRow();
+    std::vector<Student>& students = gradingSystem.getStudents();
+
+    if (row < 0 || row >= static_cast<int>(students.size())) {
+        QMessageBox::information(this, "Select Student", "Please select a student first.");
+        return;
+    }
+
+    Student& student = students[row];
+    bool ok = false;
+
+    QString behavior = QInputDialog::getMultiLineText(
+        this,
+        "Edit Behavior",
+        "Enter behavior notes:",
+        QString::fromStdString(student.getBehavior()),
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    QString comments = QInputDialog::getMultiLineText(
+        this,
+        "Edit Comments",
+        "Enter teacher comments:",
+        QString::fromStdString(student.getComments()),
+        &ok
+        );
+
+    if (!ok) {
+        return;
+    }
+
+    student.setBehavior(behavior.toStdString());
+    student.setComments(comments.toStdString());
+
+    logMessage("Updated notes for " + QString::fromStdString(student.getName()));
+}
+
+void MainWindow::generateReport() {
+    int row = studentTable->currentRow();
+    std::vector<Student>& students = gradingSystem.getStudents();
+
+    if (row < 0 || row >= static_cast<int>(students.size())) {
+        QMessageBox::information(this, "Select Student", "Please select a student first.");
+        return;
+    }
+
+    Student& student = students[row];
+
+    outputBox->append("------------------------------");
+    outputBox->append("Report Card");
+    outputBox->append("ID: " + QString::number(student.getStudentId()));
+    outputBox->append("Name: " + QString::fromStdString(student.getName()));
+    outputBox->append("Average: " + QString::number(student.calculateAverage(), 'f', 1) + "%");
+    outputBox->append("Letter Grade: " +
+                      QString::fromStdString(student.getFinalLetterGrade(gradingSystem.getScale())));
+    outputBox->append("Behavior: " + QString::fromStdString(student.getBehavior()));
+    outputBox->append("Comments: " + QString::fromStdString(student.getComments()));
+    outputBox->append("------------------------------");
+    outputBox->append("");
+}
+
+void MainWindow::refreshTable() {
+    std::vector<Student>& students = gradingSystem.getStudents();
+    studentTable->setRowCount(static_cast<int>(students.size()));
+
+    for (int i = 0; i < static_cast<int>(students.size()); ++i) {
+        Student& student = students[i];
+
+        studentTable->setItem(i, 0,
+                              new QTableWidgetItem(QString::number(student.getStudentId())));
+
+        studentTable->setItem(i, 1,
+                              new QTableWidgetItem(QString::fromStdString(student.getName())));
+
+        studentTable->setItem(i, 2,
+                              new QTableWidgetItem(
+                                  QString::number(student.calculateAverage(), 'f', 1) + "%"));
+
+        studentTable->setItem(i, 3,
+                              new QTableWidgetItem(
+                                  QString::fromStdString(
+                                      student.getFinalLetterGrade(gradingSystem.getScale()))));
+    }
+}
+
+void MainWindow::saveToFile() {
+    std::vector<Student>& students = gradingSystem.getStudents();
+    std::ostringstream out;
+
+    for (const Student& student : students) {
+        out << "STUDENT|"
+            << student.getStudentId() << "|"
+            << student.getName() << "|"
+            << student.getBehavior() << "|"
+            << student.getComments() << "\n";
+
+        std::vector<Grade> grades = student.getGrades();
+        for (const Grade& grade : grades) {
+            out << "GRADE|"
+                << grade.getCategory() << "|"
+                << grade.getScore() << "|"
+                << grade.getMaxScore() << "|"
+                << grade.getWeight() << "\n";
+        }
+
+        out << "END_STUDENT\n";
+    }
+
+    fileManager.saveData(out.str());
+    logMessage("Saved student data to students.txt");
+}
+
+void MainWindow::loadFromFile() {
+    std::string data = fileManager.loadData();
+
+    if (data.empty()) {
+        QMessageBox::information(this, "Load", "No saved data found.");
+        return;
+    }
+
+    gradingSystem.getStudents().clear();
+
+    std::istringstream in(data);
+    std::string line;
+    Student* currentStudent = nullptr;
+
+    while (std::getline(in, line)) {
+        if (line.empty()) {
+            continue;
+        }
+
+        std::stringstream ss(line);
+        std::string type;
+        std::getline(ss, type, '|');
+
+        if (type == "STUDENT") {
+            std::string idStr, name, behavior, comments;
+            std::getline(ss, idStr, '|');
+            std::getline(ss, name, '|');
+            std::getline(ss, behavior, '|');
+            std::getline(ss, comments, '|');
+
+            int id = std::stoi(idStr);
+            gradingSystem.addStudent(id, name);
+            currentStudent = gradingSystem.searchStudent(id);
+
+            if (currentStudent != nullptr) {
+                currentStudent->setBehavior(behavior);
+                currentStudent->setComments(comments);
+            }
+        }
+        else if (type == "GRADE" && currentStudent != nullptr) {
+            std::string category, scoreStr, maxScoreStr, weightStr;
+            std::getline(ss, category, '|');
+            std::getline(ss, scoreStr, '|');
+            std::getline(ss, maxScoreStr, '|');
+            std::getline(ss, weightStr, '|');
+
+            double score = std::stod(scoreStr);
+            double maxScore = std::stod(maxScoreStr);
+            double weight = std::stod(weightStr);
+
+            currentStudent->addGrade(category, score, maxScore, weight);
+        }
+        else if (type == "END_STUDENT") {
+            currentStudent = nullptr;
+        }
+    }
+
+    refreshTable();
+    logMessage("Loaded student data from students.txt");
+}
+
+void MainWindow::logMessage(const QString& message) {
+    outputBox->append(message);
 }
