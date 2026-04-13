@@ -73,6 +73,9 @@ This system automates calculations, organizes student data, and provides an easy
 * Methods: isValidGrade(), isValidStudentId(), isNonEmptyString()
 * Relationship: Used by GradingSystem to validate user input
 
+ ### MainWindow.cpp
+
+
 
 ## Error Handling
 
