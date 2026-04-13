@@ -74,7 +74,10 @@ This system automates calculations, organizes student data, and provides an easy
 * Relationship: Used by GradingSystem to validate user input
 
  ### MainWindow.cpp
+* Attributes 
+* gradingSystem, fileManager, UI widget pointers
 
+* method
 * setupUi(), addStudent(), deleteStudent(), addGrade(), editNotes(), generateReport(), refreshTable(), saveToFile(), 
 * loadFromFile(), logMessage()
 
