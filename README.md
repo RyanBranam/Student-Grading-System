@@ -75,7 +75,8 @@ This system automates calculations, organizes student data, and provides an easy
 
  ### MainWindow.cpp
 
-
+* setupUi(), addStudent(), deleteStudent(), addGrade(), editNotes(), generateReport(), refreshTable(), saveToFile(), 
+* loadFromFile(), logMessage()
 
 ## Error Handling
 
