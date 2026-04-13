@@ -81,6 +81,13 @@ This system automates calculations, organizes student data, and provides an easy
 * setupUi(), addStudent(), deleteStudent(), addGrade(), editNotes(), generateReport(), refreshTable(), saveToFile(), 
 * loadFromFile(), logMessage()
 
+### ConsoleBackup.cpp
+* Attributes
+* uses local GradingSystem instance)
+* Methods
+* runConsoleBackup()  — menu loop: add, edit, delete, grade entry, report generation, search
+
+
 ## Error Handling
 
 The program will validate user input using helper functions and setter methods. Invalid inputs such as negative grades or incorrect values will be rejected or corrected.
